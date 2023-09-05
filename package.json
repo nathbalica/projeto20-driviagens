@@ -1,0 +1,29 @@
+{
+  "name": "enunciado__mini-bi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node ./src/app.js",
+    "dev": "npx nodemon ./src/app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@faker-js/faker": "^8.0.1",
+    "nodemon": "^2.0.22",
+    "prisma": "^4.14.1"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.14.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "http-status": "^1.6.2",
+    "joi": "^17.10.1",
+    "pg": "^8.11.0",
+    "string-strip-html": "^13.4.2"
+  }
+}
