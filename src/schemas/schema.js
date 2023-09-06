@@ -1,8 +1,12 @@
 import Joi from 'joi';
 
-const passengerSchema = Joi.object({
+export const passengerSchema = Joi.object({
     firstName: Joi.string().min(2).max(100).required(),
     lastName: Joi.string().min(2).max(100).required()
 });
 
-export default passengerSchema;
+export const citySchema = Joi.object({
+    name: Joi.string().min(2).max(50).required()
+});
+
+

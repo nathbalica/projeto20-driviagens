@@ -5,7 +5,6 @@ async function create(req, res){
     try {
         const passengerData = req.body;
         const newPassenger = await passengerService.createPassenger(passengerData);
-        console.log(newPassenger)
 
         res.status(httpStatus.CREATED).json(newPassenger);
     } catch (error) {
