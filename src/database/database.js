@@ -12,4 +12,18 @@ const db = new Pool({
   database: process.env.DB_DATABASE || "driviagens"
 });
 
+if (process.env.MODE === "prod") configDatabase.ssl = true;
+
+
 export default db;
+
+db.query("SELECT 1")
+  .then(() => {
+    console.log("Conexão com o banco de dados estabelecida com sucesso!");
+  })
+  .catch((error) => {
+    console.error("Erro ao conectar ao banco de dados:", error.message);
+  });
+
+
+
