@@ -1,16 +1,19 @@
 import * as cityRepository from '../repositories/cities.repository.js';
+import { conflictError } from '../errors/types.js';
 
-const createCity = async (cityData) => {
-    const { name } = cityData;
+async function createCity(name){
     const existingCity = await cityRepository.findCityByName(name);
 
     if (existingCity) {
-       const error = new Error("City with this name already exists");
-       error.type = "ConflictError";
-       throw error;
+        throw conflictError('City with this name');
     }
 
     return cityRepository.createCity(name);
 };
 
-export { createCity };
+const citiesService = {
+    createCity
+}
+
+export default citiesService;
+

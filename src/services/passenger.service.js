@@ -1,15 +1,18 @@
 import * as passengerRepository from '../repositories/passenger.repository.js';
+import { conflictError } from '../errors/types.js';
 
-const createPassenger = async (data) => {
-    // Por exemplo: Verifique se o passageiro já existe
-    const existingPassenger = await passengerRepository.findPassengerByNames(data.firstName, data.lastName);
+async function createPassenger(firstName, lastName){
+    const existingPassenger = await passengerRepository.findPassengerByNames(firstName, lastName);
+
     if (existingPassenger) {
-        const error = new Error('Passenger with the same names already exists');
-        error.type = "ConflictError";
-        throw error;
+        throw conflictError("Passenger with the same names");
     }
 
-    return await passengerRepository.createPassenger(data.firstName, data.lastName);
+    return await passengerRepository.createPassenger(firstName, lastName);
 }
 
-export { createPassenger };
+const passengerService = {
+    createPassenger
+  }
+
+export default passengerService;

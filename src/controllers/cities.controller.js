@@ -1,9 +1,9 @@
-import * as cityService from '../services/cities.service.js';
 import httpStatus from 'http-status';
+import citiesService from "../services/cities.service.js"
 
 async function create(req, res) {
-    const cityData = req.body;
-    const newCity = await cityService.createCity(cityData);
+    const { name } = req.body;
+    const newCity = await citiesService.createCity(name);
     res.status(httpStatus.CREATED).json(newCity);
 }
 

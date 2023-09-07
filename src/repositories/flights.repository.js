@@ -10,13 +10,13 @@ export const findCityById = async (id) => {
 };
 
 // Crie um novo voo
-export const createFlight = async (flightData) => {
+export const createFlight = async (origin, destination, date) => {
     const query = `
         INSERT INTO flights(origin_id, destination_id, flight_date)
         VALUES($1, $2, $3)
         RETURNING *;
     `;
-    const values = [flightData.origin, flightData.destination, new Date(flightData.date.split('-').reverse().join('-'))];
+    const values = [origin, destination, date];
 
     const result = await db.query(query, values);
     return result.rows[0];
