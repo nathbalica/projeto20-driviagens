@@ -20,4 +20,19 @@ export const travelschema = Joi.object({
     flightId: Joi.number().integer().required(),
 });
 
+export const dateValidationSchema = Joi.object({
+    biggerDate: Joi.string()
+        .pattern(/^\d{2}-\d{2}-\d{4}$/)
+        .required()
+        .messages({
+            'string.pattern.base': 'bigger-date format is invalid. Expected format: dd-mm-yyyy.',
+        }),
+    smallerDate: Joi.string()
+        .pattern(/^\d{2}-\d{2}-\d{4}$/)
+        .required()
+        .messages({
+            'string.pattern.base': 'smaller-date format is invalid. Expected format: dd-mm-yyyy.',
+        }),
+});
+
 

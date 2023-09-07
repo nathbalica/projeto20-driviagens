@@ -16,4 +16,16 @@ export function notFoundError(resource = "Item") {
     return error;
 }
 
+export function badRequestError(message = "Requisição inválida.") {
+    const error = new Error(message);
+    error.type = "BadRequestError"; // Nome consistente para o tipo de erro
+    return error;
+}
+
+export function queryError(message = "Invalid query parameters.") {
+    const error = new Error(message);
+    error.type = "QueryError";
+    return error;
+}
+
 

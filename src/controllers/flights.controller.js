@@ -9,4 +9,17 @@ const create = async (req, res) => {
     res.status(httpStatus.CREATED).json(newFlight);
 };
 
-export const flightsController = { create };
+const get = async (req, res) => {
+    const filters = {
+        origin: req.query.origin,
+        destination: req.query.destination,
+        biggerDate: req.query['bigger-date'],
+        smallerDate: req.query['smaller-date']
+    };
+
+    const flights = await flightsService.getFilteredFlights(filters);
+    res.json(flights);
+};
+
+
+export const flightsController = { create, get };

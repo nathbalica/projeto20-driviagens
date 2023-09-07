@@ -22,3 +22,33 @@ export const createFlight = async (origin, destination, date) => {
     return result.rows[0];
 };
 
+
+export const getFilteredFlights = async (filters) => {
+    let query = 'SELECT id, origin, destination, date FROM flights WHERE 1=1';
+    const values = [];
+
+    if (filters.origin) {
+        query += ' AND origin = ?';
+        values.push(filters.origin);
+    }
+
+    if (filters.destination) {
+        query += ' AND destination = ?';
+        values.push(filters.destination);
+    }
+
+    if (filters.biggerDate) {
+        query += ' AND date >= ?';
+        values.push(filters.biggerDate);
+    }
+
+    if (filters.smallerDate) {
+        query += ' AND date <= ?';
+        values.push(filters.smallerDate);
+    }
+
+    query += ' ORDER BY date ASC';
+
+    return await db.query(query, values);
+};
+

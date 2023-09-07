@@ -1,6 +1,8 @@
 import dayjs from 'dayjs';
 import * as flightsRepository from '../repositories/flights.repository.js';
-import { conflictError, notFoundError, incompleteDataError } from '../errors/types.js';
+import { conflictError, notFoundError, incompleteDataError, queryError } from '../errors/types.js';
+import { dateValidationSchema } from "../schemas/schema.js"
+
 
 async function createFlight (origin, destination, date){
 
@@ -25,8 +27,39 @@ async function createFlight (origin, destination, date){
     return flightsRepository.createFlight(origin, destination, date);
 };
 
+async function getFilteredFlights(filters) {
+    // Validando as datas.
+    if (filters.biggerDate && filters.smallerDate) {
+        if (dayjs(filters.smallerDate, 'DD-MM-YYYY').isAfter(dayjs(filters.biggerDate, 'DD-MM-YYYY'))) {
+            throw badRequestError("smaller-date cannot be bigger than bigger-date");
+        }
+    }
+
+    if ((!filters.biggerDate && filters.smallerDate) || (filters.biggerDate && !filters.smallerDate)) {
+        throw queryError("Both bigger-date and smaller-date are required together.");
+    }
+
+    const validationResult = dateValidationSchema.validate({ biggerDate: filters.biggerDate, smallerDate: filters.smallerDate });
+
+    if (validationResult.error) {
+        throw queryError(validationResult.error.message);
+    }
+
+    // Buscando os voos após todas as validações.
+    const results = await flightsRepository.getFilteredFlights(filters);
+
+    // Se origin estiver definido no filtro e nenhum resultado for encontrado, retornar um array vazio.
+    if (results.length === 0) {
+        return [];
+    }
+
+    return results;
+}
+
+
 const flightsService = {
-    createFlight
+    createFlight,
+    getFilteredFlights
 }
 
 export default flightsService;

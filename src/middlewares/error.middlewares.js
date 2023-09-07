@@ -27,12 +27,16 @@ export default function errorHandler(error, req, res, next) {
         return res.status(httpStatus.FORBIDDEN).send(error.message || "Erro de autorização.");
     }
 
-    if (error.type === "BadRequest") {
+    if (error.type === "BadRequestError") {
         return res.status(httpStatus.BAD_REQUEST).send(error.message || "Requisição inválida.");
     }
 
     if (error.type === "RateLimitError") {
         return res.status(httpStatus.TOO_MANY_REQUESTS).send(error.message || "Muitas solicitações. Tente novamente mais tarde.");
+    }
+
+    if (error.type === "QueryError") {
+        return res.status(httpStatus.UNPROCESSABLE_ENTITY).send(error.message || "Invalid query parameters.");
     }
 
     // Caso nenhum dos tipos acima corresponda:
