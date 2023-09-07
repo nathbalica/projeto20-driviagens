@@ -22,4 +22,3 @@ export const createFlight = async (flightData) => {
     return result.rows[0];
 };
 
-export { findFlightsByNames, createPassenger };

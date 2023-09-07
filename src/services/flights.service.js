@@ -22,7 +22,7 @@ export const createFlight = async (flightData) => {
     const currentDate = dayjs(); // pega a data atual usando o Day.js
     const flightDate = dayjs(date, 'DD-MM-YYYY'); // formata a data usando o Day.js
 
-    if (flightDate.isSameOrBefore(currentDate)) {
+    if (flightDate.diff(currentDate) <= 0) {
         const error = new Error('Flight date must be greater than the current date.');
         error.type = 'ValidationError';
         throw error;
