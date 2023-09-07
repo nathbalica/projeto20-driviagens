@@ -18,7 +18,7 @@ const get = async (req, res) => {
     };
 
     const flights = await flightsService.getFilteredFlights(filters);
-    res.json(flights);
+    res.json(flights.rows);
 };
 
 

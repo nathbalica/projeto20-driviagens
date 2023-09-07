@@ -24,30 +24,42 @@ export const createFlight = async (origin, destination, date) => {
 
 
 export const getFilteredFlights = async (filters) => {
-    let query = 'SELECT id, origin, destination, date FROM flights WHERE 1=1';
+    let query = `
+        SELECT f.id, o.name as origin, d.name as destination, f.flight_date as date 
+        FROM flights f
+        JOIN cities o ON f.origin_id = o.id
+        JOIN cities d ON f.destination_id = d.id
+        WHERE 1=1
+    `;
+
     const values = [];
+    let index = 1;
 
     if (filters.origin) {
-        query += ' AND origin = ?';
+        query += ` AND o.name = $${index}`;
         values.push(filters.origin);
+        index++;
     }
 
     if (filters.destination) {
-        query += ' AND destination = ?';
+        query += ` AND d.name = $${index}`;
         values.push(filters.destination);
+        index++;
     }
 
     if (filters.biggerDate) {
-        query += ' AND date >= ?';
+        query += ` AND f.flight_date >= $${index}`;
         values.push(filters.biggerDate);
+        index++;
     }
 
     if (filters.smallerDate) {
-        query += ' AND date <= ?';
+        query += ` AND f.flight_date <= $${index}`;
         values.push(filters.smallerDate);
+        index++;
     }
 
-    query += ' ORDER BY date ASC';
+    query += ' ORDER BY f.flight_date ASC';
 
     return await db.query(query, values);
 };
