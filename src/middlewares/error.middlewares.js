@@ -39,6 +39,10 @@ export default function errorHandler(error, req, res, next) {
         return res.status(httpStatus.UNPROCESSABLE_ENTITY).send(error.message || "Invalid query parameters.");
     }
 
+    if (error.type === "TooManyResultsError") {
+        return res.status(httpStatus.INTERNAL_SERVER_ERROR).send("Too many results");
+    }
+
     // Caso nenhum dos tipos acima corresponda:
     res.status(httpStatus.INTERNAL_SERVER_ERROR).send("Sorry, something went wrong 😢");
 }

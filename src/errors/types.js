@@ -28,4 +28,10 @@ export function queryError(message = "Invalid query parameters.") {
     return error;
 }
 
+export function tooManyResultsError() {
+    const error = new Error("Too many results");
+    error.type = "TooManyResultsError";
+    return error;
+}
+
 

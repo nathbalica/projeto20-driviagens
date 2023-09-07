@@ -19,4 +19,33 @@ const createPassenger = async (first_name, last_name) => {
     }
 };
 
-export { findPassengerByNames, createPassenger };
+const getPassengerTravels = async (name) => {
+    let query = `
+        SELECT 
+            p.first_name || ' ' || p.last_name AS passenger,
+            COUNT(t.id) AS travels
+        FROM 
+            passengers p
+        LEFT JOIN 
+            travels t ON p.id = t.passenger_id
+    `;
+
+    const values = [];
+
+    if (name) {
+        query += ' WHERE p.first_name ILIKE ? OR p.last_name ILIKE ?';
+        values.push(`%${name}%`, `%${name}%`);
+    }
+
+    query += `
+        GROUP BY 
+            p.id
+        ORDER BY 
+            travels DESC;
+    `;
+
+    return await db.query(query, values);
+};
+
+
+export { findPassengerByNames, createPassenger, getPassengerTravels };
