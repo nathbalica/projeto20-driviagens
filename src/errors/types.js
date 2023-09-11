@@ -1,17 +1,17 @@
 export function conflictError(resource = "Item") {
-    const error = new Error(`${resource} já existe!`);
+    const error = new Error(`${resource}`);
     error.type = "ConflictError";
     return error;
 }
 
 export function incompleteDataError() {
-    const error = new Error(`Preencha todos os dados!`);
+    const error = new Error(`A data do voo deve ser maior do que a data atual!`);
     error.type = "incompleteData";
     return error;
 }
 
 export function notFoundError(resource = "Item") {
-    const error = new Error(`${resource} não encontrado!`);
+    const error = new Error(`${resource} not found!`);
     error.type = "ResourceNotFound";
     return error;
 }
@@ -33,5 +33,7 @@ export function tooManyResultsError() {
     error.type = "TooManyResultsError";
     return error;
 }
+
+
 
 

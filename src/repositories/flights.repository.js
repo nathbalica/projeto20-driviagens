@@ -47,20 +47,22 @@ export const getFilteredFlights = async (filters) => {
         index++;
     }
 
-    if (filters.biggerDate) {
-        query += ` AND f.flight_date >= $${index}`;
-        values.push(filters.biggerDate);
-        index++;
-    }
-
     if (filters.smallerDate) {
-        query += ` AND f.flight_date <= $${index}`;
+        query += ` AND f.flight_date >= $${index}`;
         values.push(filters.smallerDate);
         index++;
     }
+    
+    if (filters.biggerDate) {
+        query += ` AND f.flight_date <= $${index}`;
+        values.push(filters.biggerDate);
+        index++;
+    } 
 
     query += ' ORDER BY f.flight_date ASC';
 
-    return await db.query(query, values);
+    const result = await db.query(query, values);
+    console.log("Result:", result.rows);
+    return result;
 };
 

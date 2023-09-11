@@ -31,10 +31,12 @@ const getPassengerTravels = async (name) => {
     `;
 
     const values = [];
+    let index = 1;  // Initialize parameter index
 
     if (name) {
-        query += ' WHERE p.first_name ILIKE ? OR p.last_name ILIKE ?';
+        query += ` WHERE p.first_name ILIKE $${index} OR p.last_name ILIKE $${index + 1}`;
         values.push(`%${name}%`, `%${name}%`);
+        index += 2;  // Increase the index by 2 because you added two values
     }
 
     query += `
@@ -46,6 +48,5 @@ const getPassengerTravels = async (name) => {
 
     return await db.query(query, values);
 };
-
 
 export { findPassengerByNames, createPassenger, getPassengerTravels };

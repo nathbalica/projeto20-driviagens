@@ -14,10 +14,11 @@ export function validateSchema(schema) {
             const errorMessage = error.details.map((detail) => detail.message).join(" ");
             const errorToThrow = new Error(errorMessage);
             errorToThrow.type = 'ValidationError';
-            throw errorToThrow;
+            next(errorToThrow);  // Alteração aqui
         } else {
-            req.body = cleanData; // Opcional: se você quiser substituir o req.body pelos dados limpos.
+            req.body = cleanData;
             next();
         }
     };
 }
+

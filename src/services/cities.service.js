@@ -5,7 +5,7 @@ async function createCity(name){
     const existingCity = await cityRepository.findCityByName(name);
 
     if (existingCity) {
-        throw conflictError('City with this name');
+        throw conflictError('There is already a city with the same name.');
     }
 
     return cityRepository.createCity(name);

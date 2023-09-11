@@ -1,5 +1,6 @@
 import httpStatus from 'http-status';
 import flightsService from "../services/flights.service.js"
+import moment from 'moment';
 
 const create = async (req, res) => {
     const { origin, destination, date } = req.body;
@@ -18,8 +19,15 @@ const get = async (req, res) => {
     };
 
     const flights = await flightsService.getFilteredFlights(filters);
-    res.json(flights.rows);
+    
+    const formattedFlights = flights.rows.map(flight => {
+        return {
+            ...flight,
+            date: moment(flight.date).format('DD-MM-YYYY')
+        };
+    });
+    
+    res.json(formattedFlights);
 };
-
 
 export const flightsController = { create, get };

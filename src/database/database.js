@@ -12,7 +12,7 @@ const db = new Pool({
   database: process.env.DB_DATABASE || "driviagens"
 });
 
-if (process.env.MODE === "prod") configDatabase.ssl = true;
+if (process.env.NODE_ENV === "production") configDatabase.ssl = true;
 
 
 export default db;
