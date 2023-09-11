@@ -16,17 +16,17 @@ async function createFlight (origin, destination, date) {
         throw notFoundError('Origin city or destination city not found!');
     }
 
-    const currentDate = moment().format('DD-MM-YYYY'); // get current date using moment
-    const flightDate = moment(date, 'DD-MM-YYYY'); // format the date using moment
+    const currentDate = moment();  // Mantenha isso como um objeto moment
+    const flightDate = moment(date, 'DD-MM-YYYY'); 
 
-    if (flightDate.diff(currentDate, 'days') <= 0) {
+    if (flightDate.isSameOrBefore(currentDate)) {  // Verifique se a flightDate é a mesma ou anterior à currentDate
         throw incompleteDataError(); 
     }
-
+    
     return flightsRepository.createFlight(origin, destination, date);
 };
 
-async function getFilteredFlights(filters, page=1) {
+async function getFilteredFlights(filters) {
     const validationResult = dateValidationSchema.validate({ 
         biggerDate: filters.biggerDate, 
         smallerDate: filters.smallerDate 
@@ -39,7 +39,6 @@ async function getFilteredFlights(filters, page=1) {
     if (filters.biggerDate && filters.smallerDate) {
         const biggerDateFormatted = moment(filters.biggerDate, 'DD-MM-YYYY').format('YYYY-MM-DD');
         const smallerDateFormatted = moment(filters.smallerDate, 'DD-MM-YYYY').format('YYYY-MM-DD');
-        console.log("Formatted Dates:", biggerDateFormatted, smallerDateFormatted);
         
         if (moment(smallerDateFormatted).isAfter(biggerDateFormatted)) {
             throw badRequestError("smaller-date cannot be after bigger-date");
@@ -51,14 +50,7 @@ async function getFilteredFlights(filters, page=1) {
         throw queryError("Both bigger-date and smaller-date are required together.");
     }
 
-    const results = await flightsRepository.getFilteredFlights(filters, page);
-
-    if (results.length === 0) {
-        return [];
-    }
-
-
-    return results;
+    return await flightsRepository.getFilteredFlights(filters);
 }
 
 const flightsService = {

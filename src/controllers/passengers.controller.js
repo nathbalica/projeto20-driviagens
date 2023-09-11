@@ -1,5 +1,6 @@
 import httpStatus from 'http-status';
 import passengerService from "../services/passenger.service.js"
+import { badRequestError } from '../errors/types.js';
 
 async function create(req, res) {
     const { firstName, lastName} = req.body;
@@ -13,7 +14,7 @@ async function get(req, res){
     // Capturando e validando o parâmetro de paginação
     const page = parseInt(req.query.page) || 1;
     if (isNaN(page) || page <= 0) {
-        return res.status(httpStatus.BAD_REQUEST).json({ error: 'Invalid page value' });
+        throw badRequestError("Invalid page value");
     }
 
     const passengers = await passengerService.getPassengerTravels(name, page);

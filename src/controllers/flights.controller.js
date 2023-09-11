@@ -11,7 +11,6 @@ const create = async (req, res) => {
 };
 
 const get = async (req, res) => {
-
     const page = parseInt(req.query.page) || 1;
     if (isNaN(page) || page <= 0) {
         return res.status(httpStatus.BAD_REQUEST).json({ error: 'Invalid page value' });
@@ -25,11 +24,9 @@ const get = async (req, res) => {
         page: page
     };
 
-     
-
     const flights = await flightsService.getFilteredFlights(filters);
     
-    const formattedFlights = flights.rows.map(flight => {
+    const formattedFlights = flights.map(flight => {
         return {
             ...flight,
             date: moment(flight.date).format('DD-MM-YYYY')

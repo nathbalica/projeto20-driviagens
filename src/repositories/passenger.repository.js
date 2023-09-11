@@ -39,7 +39,11 @@ const getPassengerTravels = async (name, page = 1) => {
         index += 2;  // Increase the index by 2 because you added two values
     }
 
-    query += ' ORDER BY travels DESC LIMIT 10 OFFSET $' + index;
+    query += `
+        GROUP BY p.first_name, p.last_name
+        ORDER BY travels DESC LIMIT 10 OFFSET $${index}
+    `;
+
     values.push((page - 1) * 10);
 
     return await db.query(query, values);
