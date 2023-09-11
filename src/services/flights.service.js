@@ -26,7 +26,7 @@ async function createFlight (origin, destination, date) {
     return flightsRepository.createFlight(origin, destination, date);
 };
 
-async function getFilteredFlights(filters) {
+async function getFilteredFlights(filters, page=1) {
     const validationResult = dateValidationSchema.validate({ 
         biggerDate: filters.biggerDate, 
         smallerDate: filters.smallerDate 
@@ -51,11 +51,12 @@ async function getFilteredFlights(filters) {
         throw queryError("Both bigger-date and smaller-date are required together.");
     }
 
-    const results = await flightsRepository.getFilteredFlights(filters);
+    const results = await flightsRepository.getFilteredFlights(filters, page);
 
     if (results.length === 0) {
         return [];
     }
+
 
     return results;
 }

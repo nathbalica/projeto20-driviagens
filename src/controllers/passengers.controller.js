@@ -10,7 +10,13 @@ async function create(req, res) {
 
 async function get(req, res){
     const { name } = req.query;
-    const passengers = await passengerService.getPassengerTravels(name);
+    // Capturando e validando o parâmetro de paginação
+    const page = parseInt(req.query.page) || 1;
+    if (isNaN(page) || page <= 0) {
+        return res.status(httpStatus.BAD_REQUEST).json({ error: 'Invalid page value' });
+    }
+
+    const passengers = await passengerService.getPassengerTravels(name, page);
     res.json(passengers.rows);
 };
 

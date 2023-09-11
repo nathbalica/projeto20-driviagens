@@ -23,7 +23,7 @@ export const createFlight = async (origin, destination, date) => {
 };
 
 
-export const getFilteredFlights = async (filters) => {
+export const getFilteredFlights = async (filters, page = 1) => {
     let query = `
         SELECT f.id, o.name as origin, d.name as destination, f.flight_date as date 
         FROM flights f
@@ -59,10 +59,10 @@ export const getFilteredFlights = async (filters) => {
         index++;
     } 
 
-    query += ' ORDER BY f.flight_date ASC';
+    query += ' ORDER BY f.flight_date ASC LIMIT 10 OFFSET $' + index;
+    values.push((page - 1) * 10);
 
     const result = await db.query(query, values);
-    console.log("Result:", result.rows);
     return result;
 };
 

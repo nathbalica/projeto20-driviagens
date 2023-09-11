@@ -1,9 +1,9 @@
 {
   "name": "enunciado__mini-bi",
+  "type": "module",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
-  "type": "module",
   "scripts": {
     "start": "node ./src/app.js",
     "dev": "npx nodemon ./src/app.js"

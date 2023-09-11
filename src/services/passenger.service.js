@@ -12,8 +12,8 @@ async function createPassenger(firstName, lastName){
     return await passengerRepository.createPassenger(firstName, lastName);
 }
 
-export const getPassengerTravels = async (name) => {
-    const results = await passengerRepository.getPassengerTravels(name);
+export const getPassengerTravels = async (name, page=1) => {
+    const results = await passengerRepository.getPassengerTravels(name, page);
 
     if (results.length > 10) {
         throw tooManyResultsError();

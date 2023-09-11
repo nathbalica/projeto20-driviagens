@@ -19,7 +19,7 @@ const createPassenger = async (first_name, last_name) => {
     }
 };
 
-const getPassengerTravels = async (name) => {
+const getPassengerTravels = async (name, page = 1) => {
     let query = `
         SELECT 
             p.first_name || ' ' || p.last_name AS passenger,
@@ -39,12 +39,8 @@ const getPassengerTravels = async (name) => {
         index += 2;  // Increase the index by 2 because you added two values
     }
 
-    query += `
-        GROUP BY 
-            p.id
-        ORDER BY 
-            travels DESC;
-    `;
+    query += ' ORDER BY travels DESC LIMIT 10 OFFSET $' + index;
+    values.push((page - 1) * 10);
 
     return await db.query(query, values);
 };
